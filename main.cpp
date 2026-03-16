@@ -2,7 +2,6 @@
 #include <string>
 using namespace std;
 
-// Reads `count` CO2 values from stdin and returns their average.
 double readAverageCO2(int count) {
     double sum = 0.0;
     for (int i = 1; i <= count; i++) {
