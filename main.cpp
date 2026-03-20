@@ -1,33 +1,41 @@
 #include <iostream>
-#include <string>
+#include <ctime>
 using namespace std;
 
-double readAverageCO2(int count) {
-    double sum = 0.0;
-    for (int i = 1; i <= count; i++) {
-        double co2;
-        cout << "Enter CO2 level #" << i << " (ppm): ";
-        cin >> co2;
-        sum += co2;
-    }
-    return sum / count;
-}
-
 int main() {
-    cout << "Whats your name?: ";
+    int choice;
+    cout << "1. Display Local Time\n";
+    cout << "2. Calculate Time Zone Offset\n";
+    cout << "3. Measure Response Time\n";
+    cout << "Enter choice: ";
+    cin >> choice;
 
-    string name;
-    getline(cin, name);
+    if (choice == 1) {
+        time_t now = time(0);
+        char* dt = ctime(&now);
+        cout << "Local time: " << dt << endl;
+    }
 
-    cout << "Hello, " << name << "!" << endl;
+    if (choice == 2) {
+        time_t now = time(0);
+        tm* utc = gmtime(&now);
+        int offset;
+        cout << "Enter UTC offset: ";
+        cin >> offset;
+        utc->tm_hour += offset;
+        mktime(utc);
+        cout << "Time in specified zone: " << asctime(utc) << endl;
+    }
 
-    double average = readAverageCO2(3);
-    cout << "Average CO2 level: " << average << " ppm" << endl;
-
-    if (average > 1000) {
-        cout << "Turning on filtration so u wont die." << endl;
-    } else {
-        cout << "Yay ur not gonna die." << endl;
+    if (choice == 3) {
+        cout << "What is your name? ";
+        time_t start = time(0);
+        string name;
+        cin >> name;
+        time_t end = time(0);
+        double seconds = difftime(end, start);
+        cout << "Hello, " << name << endl;
+        cout << "You took " << seconds << " seconds." << endl;
     }
 
     return 0;
